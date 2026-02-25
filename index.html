@@ -13,16 +13,16 @@
     
     <script>
         tailwind.config = {
-            darkMode: 'class', // 啟用 class 模式
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         bcg: {
                             green: '#177a46',
-                            // 定義深色模式的層次：background (最深) vs surface (稍亮)
-                            darkBg: '#121212', 
-                            darkSurface: '#1e1e1e',
-                            lightBg: '#f9fafb',
+                            dark: '#1e1e1e',
+                            light: '#f3f4f6',
+                            textDark: '#e5e7eb',
+                            textLight: '#1f2937'
                         }
                     },
                     fontFamily: {
@@ -37,9 +37,8 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 平滑過渡所有顏色變化 */
-        body, header, footer, div, span, p, h1, h2, h3, h4, button, nav, a, input, label {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+        body, header, footer, div, span, p, h1, h2, h3, button, nav, a {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         .custom-checkbox:checked + div {
@@ -65,7 +64,7 @@
             50% { height: 16px; }
         }
 
-        /* TBD Card Style */
+        /* TBD Card Style - Enhanced for Light Mode Visibility */
         .tbd-card {
             background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(100,100,100,0.05) 10px, rgba(100,100,100,0.05) 20px);
         }
@@ -74,37 +73,37 @@
         }
     </style>
 </head>
-<!-- Body 顏色設置：淺色用 gray-50，深色用 darkBg (#121212) -->
-<body class="flex flex-col min-h-screen bg-bcg-lightBg text-gray-900 dark:bg-bcg-darkBg dark:text-gray-100 font-sans transition-colors duration-300">
+<body class="flex flex-col min-h-screen bg-bcg-dark text-bcg-textDark font-sans dark transition-colors duration-300">
 
-    <!-- HEADER -->
-    <!-- 背景：淺色白，深色 darkSurface (#1e1e1e) -->
-    <header class="fixed w-full top-0 z-50 h-14 flex items-center justify-between px-3 md:px-6 bg-white dark:bg-bcg-darkSurface shadow-sm border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+    <!-- HEADER (Compact Height: h-14) -->
+    <header class="fixed w-full top-0 z-50 h-14 flex items-center justify-between px-3 md:px-6 bg-white dark:bg-black/95 shadow-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
         
         <!-- Left: Menu & Brand -->
         <div class="flex items-center h-full">
             <!-- Hamburger -->
-            <button id="menu-btn" class="text-gray-600 dark:text-gray-300 hover:text-bcg-green dark:hover:text-bcg-green focus:outline-none transition p-2 mr-2">
+            <button id="menu-btn" class="text-gray-600 dark:text-gray-300 hover:text-bcg-green focus:outline-none transition p-2 mr-2">
                 <i class="fas fa-bars text-lg"></i>
             </button>
             
-            <!-- PMCS Logo -->
+            <!-- PMCS Logo (Independent) -->
             <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="cursor-pointer mr-4 border-r border-gray-300 dark:border-gray-700 pr-4 h-8 flex items-center">
                 <span class="font-bold text-xl tracking-wider text-bcg-green leading-none">PMCS</span>
             </div>
 
-            <!-- Course Names -->
+            <!-- Course Names (Stacked) - Hidden on very small screens -->
             <div class="hidden lg:flex flex-col justify-center h-full py-1">
+                <!-- CN Name (Top, Small) -->
                 <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-none mb-0.5">
                     AI世代產品經理職涯策略與專案管理導論
                 </div>
+                <!-- EN Name (Bottom, 2 Lines) -->
                 <div class="text-[9px] text-gray-400 dark:text-gray-500 leading-tight">
                     Introduction to Project Management and<br>Career Strategy of a Product Manager in the AI Era
                 </div>
             </div>
         </div>
 
-        <!-- Center: Fixed Title -->
+        <!-- Center: Fixed Title (Large & Centered) -->
         <h1 class="absolute left-1/2 transform -translate-x-1/2 text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 tracking-wide text-center uppercase whitespace-nowrap">
             <span class="lang-en">Course Notification</span>
             <span class="lang-zh hidden">課程通知</span>
@@ -139,9 +138,8 @@
     </div>
 
     <!-- SIDEBAR -->
-    <!-- 側邊欄背景改為 surface 色 -->
     <div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm transition-opacity"></div>
-    <div id="sidebar" class="fixed top-0 left-0 w-72 h-full bg-white dark:bg-bcg-darkSurface border-r border-gray-200 dark:border-gray-800 z-50 transform -translate-x-full shadow-2xl flex flex-col">
+    <div id="sidebar" class="fixed top-0 left-0 w-72 h-full bg-white dark:bg-bcg-dark border-r border-gray-200 dark:border-gray-700 z-50 transform -translate-x-full shadow-2xl flex flex-col">
         <!-- Sidebar Header -->
         <div class="h-14 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-black/20">
             <span class="font-bold text-lg text-gray-800 dark:text-white tracking-widest">MENU</span>
@@ -151,15 +149,12 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 space-y-1">
-            <!-- Overview Nav -->
             <a href="#" onclick="switchSection('overview')" id="nav-overview" class="block px-6 py-4 border-l-4 border-bcg-green bg-gray-100 dark:bg-white/5 text-bcg-green dark:text-white">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-chart-pie"></i></span>
                     <span class="lang-en">Overview</span><span class="lang-zh hidden">綜覽</span>
                 </div>
             </a>
-            
-            <!-- W1W2 Nav -->
             <a href="#" onclick="switchSection('w1w2')" id="nav-w1w2" class="block px-6 py-4 border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
@@ -173,7 +168,6 @@
                 </div>
             </a>
             
-            <!-- W3W5 Nav -->
              <a href="#" onclick="switchSection('w3w5')" id="nav-w3w5" class="block px-6 py-4 border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition">
                 <div class="flex items-center">
                     <span class="w-6 text-center mr-3"><i class="fas fa-robot"></i></span>
@@ -186,10 +180,10 @@
 
             <!-- Future Modules -->
             <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Upcoming</div>
-            <a href="#" class="block px-6 py-3 text-gray-500 dark:text-gray-600 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-briefcase w-6 mr-3"></i> W6-8 PM Role</a>
-            <a href="#" class="block px-6 py-3 text-gray-500 dark:text-gray-600 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-rocket w-6 mr-3"></i> W9 & 16 Project</a>
-            <a href="#" class="block px-6 py-3 text-gray-500 dark:text-gray-600 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-compass w-6 mr-3"></i> W10-12 Career</a>
-            <a href="#" class="block px-6 py-3 text-gray-500 dark:text-gray-600 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-tasks w-6 mr-3"></i> W13-15 PjM</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-briefcase w-6 mr-3"></i> W6-8 PM Role</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-rocket w-6 mr-3"></i> W9 & 16 Project</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-compass w-6 mr-3"></i> W10-12 Career</a>
+            <a href="#" class="block px-6 py-3 text-gray-400 cursor-not-allowed flex items-center opacity-50"><i class="fas fa-tasks w-6 mr-3"></i> W13-15 PjM</a>
         </nav>
     </div>
 
@@ -209,7 +203,7 @@
                     <span class="lang-en">Welcome to PMCS</span>
                     <span class="lang-zh hidden">歡迎來到 PMCS</span>
                 </h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm max-w-2xl leading-relaxed">
+                <p class="text-gray-600 dark:text-gray-400 text-sm max-w-2xl leading-relaxed">
                     <span class="lang-en">Strategic thinking and project execution in the age of Artificial Intelligence. This course integrates PBL (Problem-Based Learning) and SDL (Self-Directed Learning).</span>
                     <span class="lang-zh hidden">人工智慧時代的策略思維與專案執行。本課程整合了問題導向學習 (PBL) 與自主學習 (SDL)。</span>
                 </p>
@@ -222,12 +216,12 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Syllabus Card -->
-                <div class="bg-white dark:bg-bcg-darkSurface border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-md dark:hover:border-bcg-green/50 transition group">
+                <div class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-bcg-green/10 text-bcg-green rounded-md">
                             <i class="fas fa-book"></i>
                         </div>
-                        <i class="fas fa-arrow-right text-gray-300 dark:text-gray-600 group-hover:text-bcg-green transition"></i>
+                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-bcg-green transition"></i>
                     </div>
                     <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-2">
                         <span class="lang-en">Course Syllabus</span><span class="lang-zh hidden">課程大綱</span>
@@ -242,12 +236,12 @@
                 </div>
 
                 <!-- 1141 Showcase -->
-                <div class="bg-white dark:bg-bcg-darkSurface border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-md dark:hover:border-blue-500/50 transition group">
+                <div class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-6 hover:shadow-md dark:hover:bg-white/10 transition group">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-md">
+                        <div class="p-3 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-500 rounded-md">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <i class="fas fa-external-link-alt text-gray-300 dark:text-gray-600 group-hover:text-blue-500 transition"></i>
+                        <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-500 transition"></i>
                     </div>
                     <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-2">
                         <span class="lang-en">1141 Project Gallery</span><span class="lang-zh hidden">1141 期末專案</span>
@@ -256,9 +250,7 @@
                         <span class="lang-en">Explore capstone projects from the previous semester.</span>
                         <span class="lang-zh hidden">探索上學期學長姐的優秀期末專案作品。</span>
                     </p>
-                    <a href="https://lolopodcast.github.io/1141-PMCS/" target="_blank" class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide hover:underline">
-                        View Showcase
-                    </a>
+                    <a href="https://lolopodcast.github.io/1141-PMCS/" target="_blank" class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide hover:underline">View Showcase</a>
                 </div>
             </div>
         </div>
@@ -276,7 +268,7 @@
                 <button onclick="switchTab('w1-pre')" id="tab-w1-pre" class="px-4 py-2 text-sm font-medium border-b-2 border-bcg-green text-bcg-green transition">
                     Pre W1 #1 (02/14)
                 </button>
-                <button onclick="switchTab('w1-post')" id="tab-w1-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition">
+                <button onclick="switchTab('w1-post')" id="tab-w1-post" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition">
                     Post W1 #2 (TBD)
                 </button>
             </div>
@@ -319,26 +311,26 @@
 
                 <!-- Logistics Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-white dark:bg-bcg-darkSurface p-4 rounded border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold mb-1">Time</span>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-200 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">Time</span>
                         <span class="text-lg font-bold text-gray-800 dark:text-white">Wed 08:10</span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">Session 3a (Be on time!)</span>
+                        <span class="text-xs text-gray-500">Session 3a (Be on time!)</span>
                     </div>
-                    <div class="bg-white dark:bg-bcg-darkSurface p-4 rounded border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold mb-1">Room</span>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-200 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">Room</span>
                         <span class="text-lg font-bold text-gray-800 dark:text-white">Mgmt B15</span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">College of Management</span>
+                        <span class="text-xs text-gray-500">College of Management</span>
                     </div>
-                    <div class="bg-white dark:bg-bcg-darkSurface p-4 rounded border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-center shadow-sm">
-                        <span class="text-[10px] uppercase text-gray-500 dark:text-gray-400 font-bold mb-1">Grading</span>
+                    <div class="bg-white dark:bg-white/5 p-4 rounded border border-gray-200 dark:border-white/5 flex flex-col items-center justify-center text-center shadow-sm">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold mb-1">Grading</span>
                         <span class="text-lg font-bold text-bcg-green">20%</span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400">Participation & Attendance</span>
+                        <span class="text-xs text-gray-500">Participation & Attendance</span>
                     </div>
                 </div>
 
                 <!-- Checklist -->
-                <div class="bg-white dark:bg-bcg-darkSurface rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-white/5">
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
                         <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
                             <i class="fas fa-list-check mr-2 text-bcg-green"></i>
                             <span class="lang-en">Mission Checklist</span><span class="lang-zh hidden">W1 課前任務清單</span>
@@ -346,15 +338,15 @@
                         <span class="text-xs font-mono text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded font-bold">Due: 02/24</span>
                     </div>
 
-                    <div class="divide-y divide-gray-200 dark:divide-gray-700" id="checklist-container">
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container">
                         <!-- Task 1 -->
                         <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
                             <div class="flex-1">
                                 <span class="block text-gray-800 dark:text-white font-bold mb-1">
                                     <span class="lang-en">Read the Syllabus</span><span class="lang-zh hidden">閱讀課程大綱 (Syllabus)</span>
                                 </span>
-                                <span class="text-sm text-gray-600 dark:text-gray-300">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">
                                     <span class="lang-en">Understand the grading policy and weekly schedule.</span><span class="lang-zh hidden">詳細了解評分標準與每週課程進度。</span>
                                 </span>
                             </div>
@@ -362,7 +354,7 @@
 
                         <!-- Task 2 -->
                         <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
                             <div class="flex-1">
                                 <span class="block text-gray-800 dark:text-white font-bold mb-2">
                                     <span class="lang-en">Watch Assigned Videos</span><span class="lang-zh hidden">觀看指定影片</span>
@@ -380,9 +372,9 @@
                             </div>
                         </label>
 
-                        <!-- Task 3 (WITH DOWNLOAD BUTTONS) -->
+                        <!-- Task 3 -->
                         <label class="flex items-start p-5 bg-yellow-50 dark:bg-yellow-500/10 hover:bg-yellow-100 dark:hover:bg-yellow-500/20 transition cursor-pointer border-l-4 border-yellow-500">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
                             <div class="flex-1">
                                 <div class="flex items-center mb-1">
                                     <span class="block text-gray-800 dark:text-white font-bold mr-2">
@@ -413,7 +405,7 @@
 
                         <!-- Task 4 -->
                         <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
-                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5">
                             <div class="flex-1">
                                 <span class="block text-gray-800 dark:text-white font-bold mb-1">
                                     <span class="lang-en">Fill out Personal Info Form</span><span class="lang-zh hidden">填寫個人資料表單</span>
@@ -426,7 +418,7 @@
                     </div>
 
                     <!-- Progress Counter -->
-                    <div class="bg-gray-50 dark:bg-white/5 px-6 py-3 border-t border-gray-200 dark:border-gray-700 text-right">
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-3 border-t border-gray-200 dark:border-gray-700 text-right">
                         <span class="text-xs font-mono text-gray-500 dark:text-gray-400">
                             <span id="checked-count" class="font-bold text-bcg-green">0</span>/<span id="total-count">4</span> 
                             <span class="lang-en">Completed</span><span class="lang-zh hidden">已完成</span>
@@ -435,14 +427,117 @@
                 </div>
             </div>
 
-            <!-- Post W1 Content (TBD) -->
+            <!-- Post W1 Content -->
             <div id="content-w1-post" class="hidden">
-                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-48 flex flex-col items-center justify-center p-6 text-center">
-                    <i class="fas fa-hourglass-half text-3xl text-gray-300 dark:text-gray-600 mb-3"></i>
-                    <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400">Post-Class Content</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span class="lang-en">Will be available after W1 class</span><span class="lang-zh hidden">第一週課後開放</span>
+                <!-- Alert Banner (TA Reminders) -->
+                <div class="bg-blue-50 dark:bg-blue-900/10 border-l-4 border-blue-500 p-6 mb-8 rounded-r-md shadow-sm">
+                    <h4 class="text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider text-xs mb-4 flex items-center">
+                        <i class="fas fa-envelope-open-text mr-2"></i>
+                        <span class="lang-en">Reminders from TAs</span><span class="lang-zh hidden">助教溫馨提醒</span>
+                    </h4>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                        <span class="lang-en">Hope you enjoyed W1! Please complete the following tasks to get ready for W2. If you have questions, contact TAs (Zoe & Jeremy).</span>
+                        <span class="lang-zh hidden">希望大家第一週上課愉快！請完成以下任務以準備第二週的課程。如有問題歡迎聯繫助教。</span>
                     </p>
+                </div>
+
+                <!-- Post-Class Checklist -->
+                <div class="bg-white dark:bg-white/5 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-black/20">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm uppercase tracking-wide flex items-center">
+                            <i class="fas fa-tasks mr-2 text-bcg-green"></i>
+                            <span class="lang-en">Post-Class Checklist</span><span class="lang-zh hidden">W1 課後任務清單</span>
+                        </h3>
+                    </div>
+
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700/50" id="checklist-container-post">
+                        <!-- Task 1: Form & Worksheet -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="block text-gray-800 dark:text-white font-bold">
+                                        <span class="lang-en">Personal Info & Worksheet W1(A)</span><span class="lang-zh hidden">個人資料表與學習單 W1(A)</span>
+                                    </span>
+                                    <span class="text-[10px] bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded font-bold border border-red-200 dark:border-red-800/50">Due: 2/25 23:59</span>
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400 block mb-2">
+                                    <span class="lang-en">If you haven't, submit Worksheet W1 (Part A) and fill out the Info Form.<br><span class="text-xs text-gray-500 dark:text-gray-500 mt-1 inline-block"><i class="fas fa-info-circle mr-1"></i>Please download the worksheet from the "Pre W1" tab or Moodle.</span></span>
+                                    <span class="lang-zh hidden">若尚未完成，請務必填寫個人資料表並繳交學習單 W1 (Part A)。<br><span class="text-xs text-gray-500 dark:text-gray-500 mt-1 inline-block"><i class="fas fa-info-circle mr-1"></i>請至「Pre W1」標籤頁或 Moodle 下載學習單檔案。</span></span>
+                                </span>
+                                <a href="https://forms.gle/tfNmtux5XPgyczpaA" target="_blank" class="inline-flex items-center text-xs text-blue-600 dark:text-blue-400 hover:underline bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-full border border-blue-100 dark:border-blue-900/30">
+                                    <i class="fas fa-link mr-1"></i> Personal Information Form Link
+                                </a>
+                            </div>
+                        </label>
+
+                        <!-- Task 2: Self-Intro Video -->
+                        <label class="flex items-start p-5 bg-yellow-50 dark:bg-yellow-500/10 hover:bg-yellow-100 dark:hover:bg-yellow-500/20 transition cursor-pointer border-l-4 border-yellow-500">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="block text-gray-800 dark:text-white font-bold">
+                                        <span class="lang-en">Self-Introduction Video</span><span class="lang-zh hidden">自我介紹影片</span>
+                                    </span>
+                                    <span class="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold">Due: 3/2 12:00</span>
+                                </div>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                                    <span class="lang-en">Record your video and upload to YouTube. Put the link on Moodle W2 [Submission].</span>
+                                    <span class="lang-zh hidden">錄製自介影片並上傳至 YouTube，將連結貼至 Moodle W2 [Submission] 區塊。</span>
+                                </p>
+                                <ul class="text-xs text-gray-600 dark:text-gray-400 list-disc list-inside mb-3 space-y-1">
+                                    <li><span class="lang-en">Hold your phone <strong class="text-gray-800 dark:text-gray-200">horizontally</strong> when recording.</span><span class="lang-zh hidden">錄影時請將手機<strong class="text-gray-800 dark:text-gray-200">橫放</strong>。</span></li>
+                                    <li><span class="lang-en">Do <strong class="text-gray-800 dark:text-gray-200">not</strong> upload as children's exclusive or short video (Shorts).</span><span class="lang-zh hidden">請<strong class="text-gray-800 dark:text-gray-200">不要</strong>設定為兒童專屬或上傳為短影音 (Shorts)。</span></li>
+                                </ul>
+                                <a href="https://lolopodcast.github.io/EMI-AI-Self-Introduction/" target="_blank" class="inline-flex items-center text-xs text-blue-600 dark:text-blue-400 hover:underline bg-white dark:bg-black/30 px-2 py-1 rounded border border-gray-200 dark:border-gray-600 transition">
+                                    <i class="fas fa-video mr-1"></i> EMI-AI Self-Intro Guide
+                                </a>
+                            </div>
+                        </label>
+
+                        <!-- Task 3: Desk Card -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <div class="flex-1">
+                                <span class="block text-gray-800 dark:text-white font-bold mb-1">
+                                    <span class="lang-en">Make Your Desk Card</span><span class="lang-zh hidden">製作個人名牌 (Desk Card)</span>
+                                </span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400 block mb-3">
+                                    <span class="lang-en">Prepare your desk card before next week's class and bring it. (Fold it so it stands on the desk)</span>
+                                    <span class="lang-zh hidden">請於下週上課前製作好您的名牌並帶來課堂。請下載下方 Word 範本進行修改。（需摺疊使其能立在桌上）</span>
+                                </span>
+                                
+                                <div class="mt-1">
+                                    <a href="./Table-Card-Sample.docx" download="Table-Card-Sample.docx" class="inline-flex items-center px-3 py-1.5 bg-white dark:bg-black/40 border border-gray-300 dark:border-gray-600 rounded text-xs font-bold text-gray-700 dark:text-gray-300 hover:border-blue-500 hover:text-blue-500 transition group-hover:bg-white">
+                                        <i class="fas fa-file-word text-blue-600 dark:text-blue-400 mr-2"></i>
+                                        <span class="lang-en">Download Desk Card Template</span><span class="lang-zh hidden">下載桌卡 Word 範本</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Task 4: Moodle -->
+                        <label class="flex items-start p-5 hover:bg-gray-50 dark:hover:bg-white/5 transition cursor-pointer">
+                            <input type="checkbox" class="custom-checkbox mt-1 mr-4 accent-bcg-green w-5 h-5 border-gray-300 dark:border-gray-600">
+                            <div class="flex-1">
+                                <span class="block text-gray-800 dark:text-white font-bold mb-1">
+                                    <span class="lang-en">Moodle Weekly Check-in</span><span class="lang-zh hidden">Moodle 每週瀏覽</span>
+                                </span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="lang-en">Browse Moodle at least once a week (part of your 20% participation).</span>
+                                    <span class="lang-zh hidden">每週至少瀏覽一次 Moodle（列入 20% 課堂參與評分）。</span>
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Progress Counter -->
+                    <div class="bg-gray-50 dark:bg-black/20 px-6 py-3 border-t border-gray-200 dark:border-gray-700 text-right">
+                        <span class="text-xs font-mono text-gray-500 dark:text-gray-400">
+                            <span id="checked-count-post" class="font-bold text-bcg-green">0</span>/<span id="total-count-post">4</span> 
+                            <span class="lang-en">Completed</span><span class="lang-zh hidden">已完成</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -457,24 +552,24 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
-                    <span class="text-xl font-bold text-gray-400 dark:text-gray-500">Module 1</span>
+                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 1</span>
                     <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 3</span>
                 </div>
                 <div class="tbd-card border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-40 flex flex-col items-center justify-center">
-                    <span class="text-xl font-bold text-gray-400 dark:text-gray-500">Module 2</span>
+                    <span class="text-xl font-bold text-gray-400 dark:text-gray-600">Module 2</span>
                     <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Week 4-5</span>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="fixed bottom-0 w-full h-14 bg-white dark:bg-bcg-darkSurface border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-3 md:px-6 z-50 text-xs transition-colors duration-300">
+    <!-- FOOTER (Compact Height: h-14) -->
+    <footer class="fixed bottom-0 w-full h-14 bg-white dark:bg-black/95 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-3 md:px-6 z-50 text-xs transition-colors duration-300">
         <!-- Left: Version & Instructor -->
         <div class="flex flex-col space-y-0.5">
             <span class="text-[9px] text-gray-400 dark:text-gray-500 font-mono">v2026.02.14 &copy; NCNU</span>
             <div class="flex items-center space-x-1">
-                <span class="text-gray-500 dark:text-gray-500 uppercase font-bold text-[9px]">Inst.</span>
+                <span class="text-gray-500 uppercase font-bold text-[9px]">Inst.</span>
                 <a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" class="text-gray-800 dark:text-gray-300 hover:text-bcg-green dark:hover:text-white hover:underline transition font-medium">
                     Prof. Shihmin Lo
                 </a>
@@ -487,14 +582,14 @@
                 <a href="mailto:s113251013@mail1.ncnu.edu.tw" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition group">
                     <span class="hidden md:inline mr-1.5 text-[10px] group-hover:underline">Zoe Chuang</span>
                     <span class="lang-zh hidden md:inline mr-1.5 text-[10px] group-hover:underline">莊詠捷</span>
-                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-blue-500 group-hover:text-white">Z</span>
+                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-blue-500 group-hover:text-white">Z</span>
                 </a>
             </div>
             <div class="flex items-center space-x-2">
                 <a href="mailto:s112251011@mail1.ncnu.edu.tw" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-white transition group">
                     <span class="hidden md:inline mr-1.5 text-[10px] group-hover:underline">Jeremy Wang</span>
                     <span class="lang-zh hidden md:inline mr-1.5 text-[10px] group-hover:underline">王毓翰</span>
-                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-green-500 group-hover:text-white">J</span>
+                    <span class="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-[8px] text-gray-600 dark:text-gray-400 group-hover:bg-green-500 group-hover:text-white">J</span>
                 </a>
             </div>
         </div>
@@ -503,7 +598,6 @@
     <script>
         // === STATE & CONFIG ===
         let currentLang = 'en';
-        // Check for saved preference or default to true
         let isDarkMode = true;
         let isAudioPlaying = false;
         let speechUtterance = null;
@@ -513,37 +607,38 @@
         const themeToggle = document.getElementById('theme-toggle');
         const audioBtn = document.getElementById('audio-btn');
         const audioStatus = document.getElementById('audio-status');
-        const checklistInputs = document.querySelectorAll('#checklist-container input[type="checkbox"]');
+        const checklistInputs = document.querySelectorAll('.custom-checkbox');
         const checkedCountEl = document.getElementById('checked-count');
         const totalCountEl = document.getElementById('total-count');
+        const checkedCountPostEl = document.getElementById('checked-count-post');
+        const totalCountPostEl = document.getElementById('total-count-post');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
 
         // === INIT ===
         updateChecklistCounter();
-        
-        // Initial Theme Setup
-        const html = document.documentElement;
-        if (isDarkMode) {
-            html.classList.add('dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun text-sm"></i>';
-        } else {
-            html.classList.remove('dark');
-            themeToggle.innerHTML = '<i class="fas fa-moon text-sm"></i>';
-        }
+        // Force dark mode init correct state
+        if(isDarkMode) document.documentElement.classList.add('dark');
 
         // === EVENT LISTENERS ===
         
         // 1. Theme Toggle
         themeToggle.addEventListener('click', () => {
             isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark');
             
-            if (isDarkMode) {
-                html.classList.add('dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun text-sm"></i>';
+            // Icon Update
+            themeToggle.innerHTML = isDarkMode 
+                ? '<i class="fas fa-sun text-sm"></i>' 
+                : '<i class="fas fa-moon text-sm"></i>';
+                
+            // Tailwind class mode handles most, but body needs manual switch for full page bg
+            if(!isDarkMode) {
+                document.body.classList.remove('bg-bcg-dark', 'text-bcg-textDark');
+                document.body.classList.add('bg-bcg-light', 'text-bcg-textLight');
             } else {
-                html.classList.remove('dark');
-                themeToggle.innerHTML = '<i class="fas fa-moon text-sm"></i>';
+                document.body.classList.add('bg-bcg-dark', 'text-bcg-textDark');
+                document.body.classList.remove('bg-bcg-light', 'text-bcg-textLight');
             }
         });
 
@@ -603,9 +698,9 @@
                     }
                 } else {
                     if(currentLang === 'en') {
-                        textToRead += "Week 1 and 2 Orientation Section. Post-Week 1 Content. This content will be available after the first class.";
+                        textToRead += "Week 1 and 2 Orientation Section. Post-Week 1 Content. Reminders from TAs: Submit your info form and Worksheet W1. Record your self-introduction video and submit it by March 2nd. Don't forget to make your desk card and browse Moodle weekly.";
                     } else {
-                        textToRead += "第一週與第二週課程定位頁面。第一週課後內容。此內容將於第一週課後開放。";
+                        textToRead += "第一週與第二週課程定位頁面。第一週課後內容。助教提醒：請於期限內繳交個人資料表與學習單。錄製自我介紹影片並於三月二日前繳交。別忘了製作個人名牌，並每週瀏覽 Moodle。";
                     }
                 }
             } else if(isW3W5) {
@@ -710,13 +805,24 @@
         document.getElementById('overlay').addEventListener('click', toggleSidebar);
 
         // 6. Checklist
-        checklistInputs.forEach(input => input.addEventListener('change', updateChecklistCounter));
         function updateChecklistCounter() {
-            const checked = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
-            const total = checklistInputs.length;
-            checkedCountEl.textContent = checked;
-            totalCountEl.textContent = total;
+            // Pre-class
+            if (checkedCountEl && totalCountEl) {
+                const preChecked = document.querySelectorAll('#checklist-container .custom-checkbox:checked').length;
+                const preTotal = document.querySelectorAll('#checklist-container .custom-checkbox').length;
+                checkedCountEl.textContent = preChecked;
+                totalCountEl.textContent = preTotal;
+            }
+            
+            // Post-class
+            if (checkedCountPostEl && totalCountPostEl) {
+                const postChecked = document.querySelectorAll('#checklist-container-post .custom-checkbox:checked').length;
+                const postTotal = document.querySelectorAll('#checklist-container-post .custom-checkbox').length;
+                checkedCountPostEl.textContent = postChecked;
+                totalCountPostEl.textContent = postTotal;
+            }
         }
+        checklistInputs.forEach(input => input.addEventListener('change', updateChecklistCounter));
 
         // Init Voice Load
         window.speechSynthesis.getVoices();
